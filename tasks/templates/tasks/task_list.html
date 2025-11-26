@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1> Tasks uncompleted: </h1>
+    {% for task in task_list %}
+        {% if not task.completed %}
+            <h1> {{ task.title }} - {{task.completed}} </h1>
+            <form action="{% url 'update-task' task.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Completed</button>
+            </form>
+            <form action="{% url 'delete' task.id %}" method='post'>
+                {% csrf_token %}
+                <button type="submit"> Delete </button>
+            </form>
+            <a href="{% url 'get-specific-object' task.id %}"> Detail from here </a>
+            <p> {{task.created_at}} </p>
+        {% endif %}
+    {% endfor %}
+    <hr>
+    <h1> Tasks completed: </h1>
+    {% for task in task_list  %}
+        {% if task.completed %}
+            <h1> {{ task.title }} - {{task.completed}} </h1>
+            <p> {{task.created_at}} </p>
+            <form action="{% url 'update-task' task.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit"> uncompleted </button>
+            </form>
+            <form action="{% url 'delete' task.id %}" method='post'>
+                {% csrf_token %}
+                <button type="submit"> Delete </button>
+            </form>
+            <a href="{% url 'get-specific-object' task.id %}">Detail from here</a><br>
+        {% endif %}
+    {% endfor %}
+    <a href="{% url 'add-task' %}"> You can add new task from here -></a> 
+    
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+
+</body>
+</html>
